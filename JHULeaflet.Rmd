@@ -1,0 +1,43 @@
+---
+title: "Leaflet Map"
+author: "cybersuno"
+date: "1/2/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+The following map represents population in Spain for all cities and towns, for the year 2009
+```{r leaflet_map,warning=FALSE, message=FALSE}
+suppressPackageStartupMessages(library(leaflet))
+df<-read.csv("SpainPopulation.csv",sep=";")
+names(df)[3]<-"city"
+names(df)[4]<-"lat"
+names(df)[5]<-"lng"
+df$pop<-paste(df$city,paste("(",df$Habitantes,")",sep=""))
+map<-df %>% 
+    leaflet() %>% 
+    addTiles() %>% 
+    addCircles(weight = 1, radius = sqrt(df$Habitantes*100),
+               color="green",
+               popup=df$pop)
+map
+```
+
+
+The code for this map:
+```{r documentation, echo=TRUE, eval=FALSE}
+suppressPackageStartupMessages(library(leaflet))
+df<-read.csv("SpainPopulation.csv",sep=";")
+names(df)[3]<-"city"
+names(df)[4]<-"lat"
+names(df)[5]<-"lng"
+df$pop<-paste(df$city,paste("(",df$Habitantes,")",sep=""))
+map<-df %>% 
+    leaflet() %>% 
+    addTiles() %>% 
+    addCircles(weight = 1, radius = sqrt(df$Habitantes*100),popup=df$pop)
+map
+```
